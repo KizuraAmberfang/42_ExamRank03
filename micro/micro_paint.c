@@ -75,7 +75,10 @@ int	setBG(char **canv, t_bg bg)
 			return (1);
 		memset(canv[i], bg.bgc, bg.w);
 		if (i == bg.h)
+		{
+			free(canv[i]);
 			canv[i] = 0;
+		}
 	}
 	return (0);
 }
@@ -123,7 +126,7 @@ int	draw(FILE *stream, t_bg bg)
 	draw.type = 0;
 	while ((ret = fscanf(stream, "\n%c %f %f %f %f %c", &draw.type, &draw.x, &draw.y, &draw.w, &draw.h, &draw.rc)) == 6)
 	{
-		if ((draw.type != 'R' && draw.type != 'r') || draw.w == 0.0 || draw.h == 0.0 || draw.rc == 0 || draw.rc == '\n')
+		if ((draw.type != 'R' && draw.type != 'r') || draw.w <= 0.0 || draw.h <= 0.0 || draw.rc == 0 || draw.rc == '\n')
 			return (freeMatrix(canv, 1));
 		setRect(canv, draw, bg);
 		draw.type = 0;
